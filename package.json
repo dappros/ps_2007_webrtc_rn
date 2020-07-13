@@ -15,7 +15,7 @@
     "react-native-camera": "^3.31.0",
     "react-native-permissions": "^2.1.5",
     "react-native-qrcode-scanner": "^1.4.1",
-    "react-native-webrtc": "^1.75.3",
+    "react-native-webrtc": "^1.84.0",
     "socket.io-client": "^2.1.1"
   },
   "devDependencies": {

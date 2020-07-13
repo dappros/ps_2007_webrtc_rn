@@ -129,7 +129,10 @@ class App extends React.Component{
         }).then(()=>{
           return pc.createOffer()
         }).then((offer)=>{
-          pc.setLocalDescription(offer).then(()=>{
+          pc.setLocalDescription(offer).then(async()=>{
+            // offer.sdp = offer.sdp.replace('a=group:BUNDLE video','a=group:BUNDLE 0')
+            // offer.sdp = offer.sdp.replace('a=mid:video', 'a=mid:0')
+            console.log(offer.sdp,'thisissdp')
             let sendoffer={to:message.from, payload:offer}
             console.log("sending quicknoticemessageregistered (a)",sendoffer);
             socket.emit("quicknoticemessageregistered",type,code,sendoffer)
@@ -177,7 +180,7 @@ class App extends React.Component{
     return (
       <SafeAreaView style={{flex:1, margin:20}}>
         <View style={{flex:1, alignItems:'center'}}>
-          <TextInput placeholder="Place code here..." onChangeText={(code)=>this.setState({code})}
+          <TextInput placeholder="Place code here or press the scan button" onChangeText={(code)=>this.setState({code})}
           style={{borderWidth:1, width:'90%', height:34, borderRadius:4, borderColor:'#ccc'}}
           />
           <TouchableOpacity onPress={()=>sendQuickNotice(this.state.code)} style={[styles.buttonStyles,{marginTop:10}]} >
