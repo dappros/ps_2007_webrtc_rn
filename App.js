@@ -123,9 +123,13 @@ class App extends React.Component{
           //   console.log(pc.addTrack,'this is addtrack funct')
           //   pc.addTrack(track, stream)
           // });
-          console.log(stream, stream.getTracks,'addtrack')
+          // const audio = stream.getAudioTracks()
+          // audio.forEach(audioTrack=>{
+          //   stream.removeTrack(audioTrack)
+          // })
+          console.log(stream,'addtrack')
           
-          pc.addStream(stream)
+          pc.addStream(stream);
         }).then(()=>{
           return pc.createOffer()
         }).then((offer)=>{

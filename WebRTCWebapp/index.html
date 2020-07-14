@@ -1,0 +1,333 @@
+
+<html>
+    <head>
+        <title>AddCam.io - Embedded Camera Viewer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel="icon" type="image/png" href="/images/addcam-icon3.png" />
+     </head>
+</html>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+
+<h1>ADDCAM.IO <img  src="/images/addcam-icon3.png" width="30" /></h1> 
+<script>
+    var myAddACam 
+    function loadcam()
+    {  
+        var config ={
+            embed_phonenumber_prompt:false
+        //    , phonenumber_attachclick_id: 'phonenumberclick'
+        //    , phonenumber_textbox: 'phonenumberentry' 
+            , code_display_id: 'codenumberret' 
+            , status_display_id: 'statusdisplay' 
+            , video_display_id: 'addacam_video'
+            , controller_id: 'addacamcontroller' 
+            , qrcode_id: 'qrcodeid'
+            , account_id: '10091'
+            , account_apikey: 'XFUHEPQQQ34RF'
+            , account_apisecret: '45tAGGfrew'
+            , showqr:true
+                        , on_codechange: function(cd){ 
+                $('a.poplink ').attr('href','?d='+cd);
+            }   
+            
+            
+            
+        }
+        myAddACam= (new ADDACAM()).init('loadmycamera',config); 
+    } 
+    var ADDACAM_CALLBACK    =   loadcam;
+    var ADDACAM_SRC         =     "https://addcam.io/ac.js";
+    var el = document.createElement('script'); el.onload = ADDACAM_CALLBACK;el.src = ADDACAM_SRC; document.body.appendChild(el)
+    
+</script> 
+ 
+<div id="loadmycamera"></div>
+<style>
+    #loadmycamera {}
+    #addacamcontroller .controlbox
+    {
+        width           : 50%;
+        min-width       : 600px;
+        max-width       : 100%;
+        border          :1px solid #ccc;
+        border-radius   :5px;
+        background      :#fefefe;
+        text-align      :center;
+        margin: 15px;
+      padding-bottom:40px;  
+    }
+    #addacamcontroller #codenumberret
+    {
+        margin: 15px;
+        padding         : 10px;
+        font-size       : 30px;
+        border          : 1px solid #ddd;
+        border-radius   : 5px; 
+        display         :inline-block;
+        text-align      :center;
+        width:200px;
+    }
+    #addacamcontroller video
+    {
+        width           : 400px;
+        height          :400px; 
+        background      :#ccc; 
+        margin: 15px;
+    }
+    .tinyinstr
+    {
+        color:#bbb;
+        font-size:10px;
+    }
+    #copied
+    {
+        display:none;
+        color:black; 
+        position:absolute;
+        width:100%;
+        height:100%;
+        top:0px;
+        left:0px;
+        opacity:0.75;
+        color:blue;
+        background:#e4e2ff;
+        margin: auto;
+        
+      padding: 70px 0;
+      text-align: center;
+    }
+    #qrcodeid{text-align:center; display:inline-block}
+    body[addcam-status="playing"] #qrcodeid { display: none }
+    body[addcam-status="playing"] .not-when-running { display: none }
+    body[addcam-status="awaiting"] #addacam_video { display: none; }
+</style> 
+<div id=addacamcontroller class=""> 
+    <div class="controlbox">
+        <div  id="codenumberret"></div>
+        <div id="copied">
+            COPIED TO CLIPBOARD
+        </div>
+        <div class="tinyinstr not-when-running">
+            Scan with your camera to display below
+        </div>
+<!--
+        <div id=sendtomyphone >
+            <a href="javascript:$('.togglephone').toggle()">Send to my phone</a>
+            <br />
+            <input class=togglephone name="phonenumber" type="phone" id="phonenumberentry" style="display: none;" size="10" maxlength="10" placeholder="(xxx)xxx-xxxx">
+            <input class=togglephone type="button" id="phonenumberclick" value="Text Me"  style="display: none;">
+        </div>
+-->
+        <div  id="statusdisplay"></div>
+        <div id="qrcodeid"></div>
+        <video id="addacam_video"  autoplay></video>
+        <p />
+        <a class='poplink not-when-running' target=_blank href=/>Show in additional browser</a>
+    </div>
+
+</div>
+
+<hr />
+<style>
+    #getyourcode{
+        white-space:pre;
+        font-family:monospace;
+        border:1px solid #ddd;
+        background:#eee
+    }
+    .alert-error
+    ,input.error{
+        background:red;
+        color:white;
+        font-weight:bold;
+    }
+    .alert-ok
+    {
+        background:green;
+        color:white;
+        font-weight:bold;
+    }
+    span.code
+    {
+        color:green;
+        font-weight:bold;
+    }
+</style>
+<h2>Embed addcam.io on your site</h2>
+<form method="post" >
+    <input name="emailaddress" width="40" placeholder="Email Address"> <input id=getapibutton type="button" value="Get API Key">
+    <div class="ret"></div>
+</form>
+
+<script>
+    $(function (){
+        $('#getapibutton').click(function(){
+
+            var form = $(this).closest('form');
+            var email =  $('input[name=emailaddress]').val();
+            if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)))
+            {
+                $('input[name=emailaddress]').addClass('error')
+                return;
+            }
+            $.post('/?getapikey=1', form.serialize(),function (ret){
+                form.find('.ret').html(ret)
+            })
+            
+        })
+    })
+</script>
+<div id="getyourcode">
+    &lt;div id="mycam">&lt;/div>
+    &lt;script> 
+        var el = document.createElement('script'); 
+        el.onload = function loadcam()
+            {   
+                 (new ADDACAM()).init('mycam',{  
+                          account_id: '<span class=code>1</span>'
+                        , account_apikey: '<span class=code>demo</span>'
+                        , account_apisecret: '<span class=code>demo</span>' 
+                    }); 
+            } ;
+        el.src = "https://addcam.io/ac.js"; 
+        document.body.appendChild(el)
+        
+    &lt;/script> 
+ 
+
+</div>
+
+</body>
+</html>
+
+<script>
+    document.getElementById("codenumberret").onclick = function() {
+    
+     var range = document.createRange(); 
+    range.selectNode(this);
+    window.getSelection().removeAllRanges(); // clear current selection
+    window.getSelection().addRange(range); // to select text
+    document.execCommand("copy");
+    document.getElementById("copied").style.display='block';
+    setTimeout(function(){
+        window.getSelection().removeAllRanges();// to deselect 
+        document.getElementById("copied").style.display='';
+   } ,1000)
+}
+</script>
+<style>
+    .example
+    {
+        white-space:pre;
+        font-family:monospace;
+        
+    }
+    table.advanced td 
+    {
+        vertical-align:top;
+    }
+    table.advanced tr:nth-child(odd) 
+    {
+        background:#f0f0f0;
+    }
+</style>
+<a href="javascript:$('#advanced').toggle()">Advanced / Usage</a>
+<div id="advanced" style="display:none;"> 
+    
+    <table class=advanced>
+        <tr>
+            <td>account_id</td>
+            <td></td>
+            <td>required</td>  
+        </tr>
+        <tr>
+            <td>account_apikey</td>
+            <td></td>
+            <td>required</td>  
+        </tr>
+        <tr>
+            <td>account_apisecret</td>
+            <td></td>
+            <td>required</td>  
+        </tr>
+        <tr>
+            <th>Config Key</th>
+            <th>values</th>
+            <th>default</th>
+            <th>example</th>
+            
+        </tr>
+        <tr>
+            <td>showqr</td>
+            <td>true:false</td> 
+            <td class="example"> 
+                {showqr: true}
+            </td>
+        </tr>
+        <tr>
+            <td>status_display_id</td>
+            <td>dom_element</td> 
+            <td class="example"> 
+            {status_display_id: 'addcam_status'}
+            &lt;div id="addcam_status">
+            &lt;/div>
+            </td>
+        </tr>
+        <tr>
+            <td>video_display_id</td>
+            <td>dom_element</td> 
+            <td class="example"> 
+            {video_display_id: 'addcam_display'}
+            &lt;video id="addcam_display">
+            &lt;/video>
+            </td>
+        </tr>
+        <tr>
+            <td>code_display_id</td>
+            <td>dom_element</td> 
+            <td class="example"> 
+            {code_display_id: 'code_display'}
+            &lt;div id="code_display">The CODE Will display here
+            &lt;/div>
+            </td>
+        </tr>
+        <tr>
+            <td>code_display_id</td>
+            <td>dom_element</td> 
+            <td class="example"> 
+            {qrcode_id: 'qrcode_location'}
+            &lt;div id="qrcode_location">place the qrcode for scanning here&lt;/div>
+            </td>
+        </tr>
+        <tr>
+            <td>on_status</td>
+            <td>function</td> 
+            <td class="example"> 
+            {on_status: function(st){
+                alert('The ADDCAM status updated to:'+st)}   
+            } 
+            </td>
+        </tr>
+        <tr>
+            <td>on_codechange</td>
+            <td>function</td> 
+            <td class="example"> 
+            {on_codechange: function(cd){
+                alert('The code has updated to :'+cd)}   
+            } 
+            </td>
+        </tr>
+        <tr>
+            <td>on_connectfailure</td>
+            <td>function</td> 
+            <td class="example"> 
+            {on_connectfailure: function(cd){
+                alert('A camera attempted to display - but there was a problem :'+cd)}   
+            } 
+            </td>
+        </tr>
+    </table>
+
+</div>
+   
